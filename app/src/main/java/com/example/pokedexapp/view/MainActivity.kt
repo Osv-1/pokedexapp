@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var recyclerView: RecyclerView
 
     //inicialização do viewModel
-   private val viewModel by lazy {
+   private val viewModel by lazy {//by lazy para inicilializar uma variavel que depende de activity
         ViewModelProvider(this, PokemonViewModelFactory())
             .get(PokemonViewModel::class.java)
 
