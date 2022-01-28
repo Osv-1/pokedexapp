@@ -3,6 +3,9 @@ package com.example.pokedexapp.view
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Chronometer
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokedexapp.R
@@ -11,10 +14,20 @@ import com.example.pokedexapp.domain.Pokemon
 import com.example.pokedexapp.domain.PokemonType
 import com.example.pokedexapp.model.PokemonResult
 import com.example.pokedexapp.model.PokemonsApiResult
+import com.example.pokedexapp.viewmodel.PokemonViewModel
+import com.example.pokedexapp.viewmodel.PokemonViewModelFactory
 
 class MainActivity : AppCompatActivity() {
     //recyclerview como uma variavel / associação
     lateinit var recyclerView: RecyclerView
+
+    //inicialização do viewModel
+   private val viewModel by lazy {
+        ViewModelProvider(this, PokemonViewModelFactory())
+            .get(PokemonViewModel::class.java)
+
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,68 +36,19 @@ class MainActivity : AppCompatActivity() {
         //carregando a recyclerview
         recyclerView = findViewById(R.id.rvPokemons)
 
-//        val charmander = Pokemon(
-//            "https://assets.pokemon.com/assets/cms2/img/pokedex/full/004.png",
-//            4,
-//            "Charmander",
-//            listOf(
-//                PokemonType("Fire")
-//            )
-//        )
-//        val pokemons = listOf(charmander, charmander, charmander, charmander, charmander)
-
         //thread para carregar pokemons
-        Thread(Runnable {
-            loadPokemons()
+        viewModel.pokemons.observe(this, Observer {
+            loadRecyclerView(it)
 
-        }).start()
-
-    }
-
-    private fun loadPokemons() {
-        //fazendo a requisição
-        val pokemonsApiResult = PokemonRepository.listPokemons()
-
-        //carregando os resultados
-        pokemonsApiResult?.results?.let {
-            val pokemons: List<Pokemon?> = it.map { pokemonResult ->
-
-                //pegando numero do pokemon
-                val number =
-                    pokemonResult.url.replace("https://pokeapi.co/api/v2/pokemon", "")
-                        .replace("/", "").toInt()
-
-
-                val pokemonApiResult = PokemonRepository.getPokemon(number)
-
-                pokemonApiResult?.let {
-
-                    Pokemon(
-                        pokemonApiResult.id,
-                        pokemonApiResult.name,
-                        pokemonApiResult.types.map { type ->
-                            type.type
-                        }
-                    )
-                }
-
-
-            }
-
-
-            val layoutManager = LinearLayoutManager(this)
-
-            //.post para ser executado dentro da main thread
-            recyclerView.post {
-                recyclerView.layoutManager = layoutManager
-                recyclerView.adapter = PokemonAdapter(pokemons)
-
-            }
-
-        }
-
-
+        })
     }
 
 
+    //load recyclerview, se eu ja tiver uma lista de pokemon evita fluxo da api
+    private fun loadRecyclerView(pokemons : List<Pokemon?>) {
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = PokemonAdapter(pokemons)
+
+
+    }
 }
