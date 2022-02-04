@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.pokedexapp.R
 import com.example.pokedexapp.domain.Pokemon
+import com.example.pokedexapp.utils.TypeColor
 import com.example.pokedexapp.utils.TypeSelector
 
 class PokemonAdapter(
@@ -45,6 +46,9 @@ class PokemonAdapter(
             item?.let {
 
                 Glide.with(itemView.context).load(it.imageurl).into(ivPokemon)
+
+                TypeColor.typeColor(context, item.types[0].name.capitalize())
+                    ?.let { color -> ivPokemon.setBackgroundResource(color) }
 
                 tvNumber.text = "Nº ${item.formattedNumber}"
                 tvName.text = item.formattedName.capitalize()

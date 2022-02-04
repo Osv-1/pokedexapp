@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadRecyclerView(pokemons: List<Pokemon?>) {
-        recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = PokemonAdapter(pokemons, this)
+
     }
 }
