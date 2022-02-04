@@ -1,18 +1,20 @@
-package com.example.pokedexapp.view
+package com.example.pokedexapp.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.view.menu.MenuView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.pokedexapp.R
 import com.example.pokedexapp.domain.Pokemon
+import com.example.pokedexapp.utils.TypeSelector
 
 class PokemonAdapter(
-    private val items: List<Pokemon?>
+    private val items: List<Pokemon?>,
+    private val context: Context
 ) : RecyclerView.Adapter<PokemonAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -45,13 +47,15 @@ class PokemonAdapter(
                 Glide.with(itemView.context).load(it.imageurl).into(ivPokemon)
 
                 tvNumber.text = "Nº ${item.formattedNumber}"
-                tvName.text = item.formattedName
-                tvType1.text = item.types[0].name.capitalize()
+                tvName.text = item.formattedName.capitalize()
+                tvType1.background =
+                    TypeSelector.typeSelector(context, item.types[0].name.capitalize())
 
 
                 if (item.types.size > 1) {
                     tvType2.visibility = View.VISIBLE
-                    tvType2.text = item.types[1].name.capitalize()
+                    tvType2.background =
+                        TypeSelector.typeSelector(context, item.types[1].name.capitalize())
                 } else {
                     tvType2.visibility = View.GONE
                 }

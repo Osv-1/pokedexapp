@@ -16,4 +16,6 @@ interface PokemonService {
     @GET("pokemon/{number}")
     fun getPokemon(@Path("number") number: Int) : Call<PokemonApiResult>
 
+
+
 }

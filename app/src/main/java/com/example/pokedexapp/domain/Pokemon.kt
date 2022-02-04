@@ -6,9 +6,10 @@ data class Pokemon(
     val types: List<PokemonType>
 ) {
 
-    val formattedName = name.capitalize()
+    val formattedName = name.lowercase()
     val formattedNumber = number.toString().padStart(3, '0')
-    val imageurl = "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/$formattedNumber.png"
+
+    val imageurl = "https://img.pokemondb.net/sprites/lets-go-pikachu-eevee/normal/$formattedName.png"
 
 }
 

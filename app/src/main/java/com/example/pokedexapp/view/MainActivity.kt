@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pokedexapp.adapter.PokemonAdapter
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,6 +34,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadRecyclerView(pokemons: List<Pokemon?>) {
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = PokemonAdapter(pokemons)
+        recyclerView.adapter = PokemonAdapter(pokemons, this)
     }
 }
