@@ -47,19 +47,19 @@ class PokemonAdapter(
 
                 Glide.with(itemView.context).load(it.imageurl).into(ivPokemon)
 
-                TypeColor.typeColor(context, item.types[0].name.capitalize())
+                TypeColor.typeColor(context, item.types[0].name.replaceFirstChar { it.uppercase() })
                     ?.let { color -> ivPokemon.setBackgroundResource(color) }
 
                 tvNumber.text = "Nº ${item.formattedNumber}"
                 tvName.text = item.formattedName.capitalize()
                 tvType1.background =
-                    TypeSelector.typeSelector(context, item.types[0].name.capitalize())
+                    TypeSelector.typeSelector(context, item.types[0].name.replaceFirstChar { it.uppercase() })
 
 
                 if (item.types.size > 1) {
                     tvType2.visibility = View.VISIBLE
                     tvType2.background =
-                        TypeSelector.typeSelector(context, item.types[1].name.capitalize())
+                        TypeSelector.typeSelector(context, item.types[1].name.replaceFirstChar { it.uppercase() })
                 } else {
                     tvType2.visibility = View.GONE
                 }
